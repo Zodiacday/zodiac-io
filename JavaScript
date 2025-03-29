@@ -1,0 +1,175 @@
+// Zodiac sign data - arranged in calendar order (Jan-Dec)
+const zodiacSigns = [
+    {
+        name: "Capricorn",
+        dates: "Dec 22 - Jan 19",
+        symbol: "♑",
+        horoscope: "Professional matters progress well today. Your disciplined approach yields results, and authority figures may take notice. Balance ambition with personal needs. Small steps toward long-term goals are especially effective now."
+    },
+    {
+        name: "Aquarius",
+        dates: "Jan 20 - Feb 18",
+        symbol: "♒",
+        horoscope: "Innovative ideas flow today. Your unique perspective offers solutions others miss. Group activities and humanitarian causes are favored. Technology may play an important role in your day. Stay true to your ideals."
+    },
+    {
+        name: "Pisces",
+        dates: "Feb 19 - Mar 20",
+        symbol: "♓",
+        horoscope: "Your imagination and empathy are heightened today. Creative pursuits and spiritual practices bring fulfillment. Pay attention to dreams and intuitive flashes. Set boundaries to protect your sensitive energy while helping others."
+    },
+    {
+        name: "Aries",
+        dates: "Mar 21 - Apr 19",
+        symbol: "♈",
+        horoscope: "Today is perfect for starting new projects. Your energy is high, and your determination is unwavering. Take the initiative in both personal and professional matters. Trust your instincts, but don't rush important decisions."
+    },
+    {
+        name: "Taurus",
+        dates: "Apr 20 - May 20",
+        symbol: "♉",
+        horoscope: "Focus on stability and self-care today. Financial matters may require your attention, so review your budget and spending. Your practical approach will help you solve any problems that arise. Make time for relaxation."
+    },
+    {
+        name: "Gemini",
+        dates: "May 21 - Jun 20",
+        symbol: "♊",
+        horoscope: "Communication flows easily today. It's an excellent time for networking, sharing ideas, and social activities. Your curiosity leads to valuable discoveries. Balance intellectual pursuits with physical movement for best results."
+    },
+    {
+        name: "Cancer",
+        dates: "Jun 21 - Jul 22",
+        symbol: "♋",
+        horoscope: "Your intuition is especially strong today. Home and family matters take center stage, and you may feel the urge to nurture those around you. Allow yourself to process emotions fully. Creative projects related to home will be rewarding."
+    },
+    {
+        name: "Leo",
+        dates: "Jul 23 - Aug 22",
+        symbol: "♌",
+        horoscope: "The spotlight is on you today. Your charisma draws others to your side, making it an ideal time for leadership and creative expression. Romance may flourish. Remember to listen as much as you speak for best results."
+    },
+    {
+        name: "Virgo",
+        dates: "Aug 23 - Sep 22",
+        symbol: "♍",
+        horoscope: "Details matter today. Your analytical skills are enhanced, making it perfect for problem-solving and organizing. Health routines can be successfully established or refined now. Take time to acknowledge your own achievements."
+    },
+    {
+        name: "Libra",
+        dates: "Sep 23 - Oct 22",
+        symbol: "♎",
+        horoscope: "Harmony and balance are your focus today. Relationships of all kinds benefit from your diplomatic approach. Aesthetic pursuits are favored, so trust your eye for beauty. Make decisions that align with your core values."
+    },
+    {
+        name: "Scorpio",
+        dates: "Oct 23 - Nov 21",
+        symbol: "♏",
+        horoscope: "Your intensity is powerful today. Deep connections and meaningful conversations bring insights. Financial matters may require investigation. Trust your instincts but verify facts before making major moves."
+    },
+    {
+        name: "Sagittarius",
+        dates: "Nov 22 - Dec 21",
+        symbol: "♐",
+        horoscope: "Adventure calls to you today. Expand your horizons through learning, travel, or philosophical exploration. Optimism attracts positive opportunities. Share your enthusiasm with others, but be mindful of overcommitting."
+    }
+];
+
+// Create zodiac cards
+function createZodiacCards() {
+    const zodiacGrid = document.getElementById('zodiacGrid');
+    
+    zodiacSigns.forEach(sign => {
+        const card = document.createElement('div');
+        card.className = 'zodiac-card';
+        
+        // Front of card
+        const cardFront = document.createElement('div');
+        cardFront.className = 'card-face card-front';
+        cardFront.innerHTML = `
+            <div class="zodiac-icon">${sign.symbol}</div>
+            <div class="zodiac-name">${sign.name}</div>
+            <div class="zodiac-date">${sign.dates}</div>
+        `;
+        
+        // Back of card
+        const cardBack = document.createElement('div');
+        cardBack.className = 'card-face card-back';
+        cardBack.innerHTML = `
+            <h3>${sign.name} Daily Horoscope</h3>
+            <p>${sign.horoscope}</p>
+        `;
+        
+        card.appendChild(cardFront);
+        card.appendChild(cardBack);
+        
+        // Add click event to flip card
+        card.addEventListener('click', () => {
+            card.classList.toggle('flipped');
+        });
+        
+        // Add hover effect
+        card.addEventListener('mousemove', handleHover);
+        card.addEventListener('mouseleave', resetHover);
+        
+        zodiacGrid.appendChild(card);
+    });
+}
+
+// Handle card hover effect (tilt)
+function handleHover(e) {
+    const card = this;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    
+    const rotateY = ((x - centerX) / centerX) * 10;
+    const rotateX = ((centerY - y) / centerY) * 10;
+    
+    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+}
+
+// Reset card to normal position
+function resetHover() {
+    const card = this;
+    if (!card.classList.contains('flipped')) {
+        card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
+    }
+}
+
+// Create stars for background
+function createStars() {
+    const starsContainer = document.getElementById('stars');
+    const starsCount = 100;
+    
+    for (let i = 0; i < starsCount; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        
+        // Random position
+        const left = Math.random() * 100;
+        const top = Math.random() * 100;
+        
+        star.style.left = `${left}%`;
+        star.style.top = `${top}%`;
+        
+        // Random size
+        const size = Math.random() * 3;
+        star.style.width = `${size}px`;
+        star.style.height = `${size}px`;
+        
+        // Random animation delay
+        const delay = Math.random() * 5;
+        star.style.animationDelay = `${delay}s`;
+        
+        starsContainer.appendChild(star);
+    }
+}
+
+// Initialize the application
+window.onload = function() {
+    createZodiacCards();
+    createStars();
+};
